@@ -2,8 +2,8 @@
 require 'config.php';
 require 'classes/aluno.class.php';
 
-$c = new Alunos();
-$alunos = $c->getLista();
+$c = new Pessoas();
+$pessoa = $c->getLista();
 ?>
 <html>
     <head>
@@ -13,33 +13,90 @@ $alunos = $c->getLista();
     <body>
         <div id="main" class="container-fluid">
             <h3>Adicionar Pessoa</h3>
-            <form border="1" solid="1" width="100%">
+            <?php
+            if (isset($_POST['nome']) && !empty($_POST['nome'])) {
+                $nome = addslashes($_POST['nome']);
+                $data_cadastro = date('Y-m-d H:i:s');
+                $data_nascimento = addslashes($_POST['dt_nascimento']);
+                $id_sexo = addslashes($_POST['sexo']);
+                $id_pessoa = addslashes($_POST['tipo_pessoa']);
+                $id_aluno = addslashes($_POST['nomealuno']);
+                $cpf = addslashes($_POST['cpf']);
+                $rg = addslashes($_POST['rg']);
+                $id_profissao = addslashes($_POST['profissao']);
+                $email = addslashes($_POST['email']);
+                $nm_empresa = addslashes($_POST['empresa']);
+                $end_comercial = addslashes($_POST['enderecocom']);
+                $id_instrucao = addslashes($_POST['instrucao']);
+                $tel_comercial = addslashes($_POST['telefonecom']);
+                $endereco = addslashes($_POST['endereco']);
+                $numero = addslashes($_POST['numero']);
+                $complemento = addslashes($_POST['complemento']);
+                $bairro = addslashes($_POST['bairro']);
+                $id_religiao = addslashes($_POST['religiao']);
+                $resp_finan = addslashes($_POST['respfinan']);
+                $pais = addslashes($_POST['pais']);
+                $id_estado = addslashes($_POST['estado']);
+                $municipio = addslashes($_POST['municipio']);
+                $cep = addslashes($_POST['cep']);
+                $celular = addslashes($_POST['celular']);
+                $celularoutro = addslashes($_POST['celularoutro']);
+                
+
+                if (!empty($nome)) {
+                    if ($c->cadastrar($nome, $data_cadastro, $data_nascimento, $id_sexo,
+                            $id_pessoa, $id_aluno, $cpf, $rg, $id_profissao, $email,
+                            $nm_empresa, $end_comercial, $id_instrucao, $tel_comercial,
+                            $endereco, $numero, $complemento, $bairro, $id_religiao,
+                            $resp_finan, $pais, $id_estado, $municipio, $cep, $celular, $celularoutro)) {
+                        ?>
+                        <div class="alert alert-success">
+                            Dados cadastrados com sucesso!
+                        </div>
+                        <?php
+                    } else {
+                        ?>
+                        <div class="alert alert-warning">
+                            Esta pessoa ja existe! 
+                        </div>
+                        <?php
+                    }
+                } else {
+                    ?>
+                    <div class="alert alert-warning">
+                        Preencha todos os campos!
+                    </div>
+                    <?php
+                }
+            }
+            ?>
+            <form method="POST">
                 <hr />
                 <div class="form-row">
                     <div class="form-group col-md-9">
                         <label for="nome">Nome</label>
-                        <input type="text" class="form-control" id="nome" placeholder="Nome">
+                        <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome">
                     </div>
 
                     <div class="form-group col-md-3">
                         <label for="dt_cadastro">Data/Hora Cadastro</label>
-                        <input type="text" class="form-control" id="dt_cadastro" value="<?php echo date('d/m/Y H:i'); ?>">
+                        <input type="text" class="form-control" name="dt_cadastro" id="dt_cadastro" value="<?php echo date('d/m/Y H:i'); ?>">
                     </div>
                 </div>    
                 <div class="form-group col-md-4">
                     <label for="dt_nascimento">Data Nascimento</label>
-                    <input type="date" class="form-control" id="dt_nascimento">
+                    <input type="date" class="form-control" id="dt_nascimento" name="dt_nascimento">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="sexo">Sexo</label>
-                    <select id="sexo" class="form-control">
+                    <select id="sexo" class="form-control" name="sexo">
                         <option selected value="1">Masculino</option>
                         <option value="2">Feminino</option>
                     </select>
                 </div>  
                 <div class="form-group col-md-4">
                     <label for="tipo_pessoa">Pessoa</label>
-                    <select id="tipo_pessoa" onchange="optionCheck()" class="form-control">
+                    <select id="tipo_pessoa" onchange="optionCheck()" class="form-control" name="tipo_pessoa">
                         <option>Selecione</option>
                         <option value="1">Aluno</option>
                         <option value="2">Pai</option>
@@ -50,24 +107,25 @@ $alunos = $c->getLista();
                 <div class="form-row" id="idDocumentos" style="display: none">
                     <div class="form-group col-md-12">
                         <label for="nomealuno">Aluno</label>
-                        <select id="nomealuno"class="form-control">
-                            <option>Selecione</option>
-                            <?php foreach ($alunos as $aluno): ?>
-                                <option value="<?php echo $aluno['id']; ?>"><?php echo $aluno['nm_aluno']; ?></option>
+                        <select id="nomealuno"class="form-control" name="nomealuno">
+                            <option selected value="0"></option>
+                            <?php foreach ($pessoa as $p): ?>
+                            
+                                <option value="<?php echo $p['id']; ?>"><?php echo $p['nome']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="cpf">CPF</label>
-                        <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF">
+                        <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite seu CPF">
                     </div>
                     <div class="form-group col-md-3">
                         <label for="rg">RG</label>
-                        <input type="text" class="form-control" id="rg" placeholder="Digite seu RG">
+                        <input type="text" class="form-control" id="rg" name="rg" cplaceholder="Digite seu RG">
                     </div>
                     <div class="form-group col-md-3">
                         <label for="profissao">Profissão</label>
-                        <select id="profissao" class="form-control">
+                        <select id="profissao" class="form-control" name="profissao">
                             <option selected value="1">Administrador</option>
                             <option value="2">Comerciante</option>
                             <option value="3">Médico</option>
@@ -76,23 +134,23 @@ $alunos = $c->getLista();
                     </div>
                     <div class="form-group col-md-3">
                         <label for="email">E-mail</label>
-                        <input type="text" class="form-control" id="email" placeholder="Digite seu E-mail">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Digite seu E-mail">
                     </div>
                 </div>
 
                 <div class="form-row" id="idDocumentosOutros" style="display: none">
                     <div class="form-group col-md-3">
                         <label for="empresa">Empresa</label>
-                        <input type="text" class="form-control" id="empresa" placeholder="Digite empresa aonde trabalha">
+                        <input type="text" class="form-control" name="empresa" id="empresa" placeholder="Digite empresa aonde trabalha">
                     </div>
                     <div class="form-group col-md-3">
                         <label for="enderecocom">Endereço Comercial</label>
-                        <input type="text" class="form-control" id="enderecocom" placeholder="Digite o endereço comercial">
+                        <input type="text" class="form-control" id="enderecocom" name="enderecocom" placeholder="Digite o endereço comercial">
                     </div>
                     <div class="form-group col-md-3">
                         <label for="instrucao">Grau de Instrução</label>
-                        <select id="instrucao" class="form-control">
-                            <option>Selecione</option>
+                        <select id="instrucao" class="form-control" name="instrucao">
+                            <option value="0" selected>Selecione</option>
                             <option value="1">Primeiro Grau Incompleto</option>
                             <option value="2">Primeiro Grau Completo</option>
                             <option value="3">Segundo Grau Incompleto</option>
@@ -106,33 +164,31 @@ $alunos = $c->getLista();
                     </div>
                     <div class="form-group col-md-3">
                         <label for="telefonecom">Telefone Comercial</label>
-                        <input type="text" class="form-control" id="telefonecom">
+                        <input type="text" class="form-control" id="telefonecom" name="telefonecom">
                     </div>
                 </div>
-
-
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="endereco">Endereço</label>
-                        <input type="text" class="form-control" id="endereco" placeholder="Rua...">
+                        <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Rua...">
                     </div>
                     <div class="form-group col-md-2">
                         <label for="numero">Número</label>
-                        <input type="text" class="form-control" id="numero" placeholder="Número...">
+                        <input type="text" class="form-control" id="numero" name="numero" placeholder="Número...">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="complemento">Complemento</label>
-                        <input type="text" class="form-control" id="complemento" placeholder="Casa Fundos...">
+                        <input type="text" class="form-control" id="complemento" name="complemento" placeholder="Casa Fundos...">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="bairro">Bairro</label>
-                        <input type="text" class="form-control" id="bairro" placeholder="Bairro">
+                        <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bairro">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="religiao">Religião</label>
-                        <select id="religiao" class="form-control">
+                        <select id="religiao" class="form-control" name="religiao">
                             <option selected value="1">Católica</option>
                             <option value="2">Budista</option>
                             <option value="3">Espiríta</option>
@@ -142,7 +198,7 @@ $alunos = $c->getLista();
                     </div> 
                     <div class="form-group col-md-4">
                         <label for="respfinan">Responsável Financeiro</label>
-                        <select id="respfinan" class="form-control">
+                        <select id="respfinan" class="form-control" name="respfinan">
                             <option selected value="1">Sim</option>
                             <option value="2">Não</option>
                         </select>
@@ -151,11 +207,11 @@ $alunos = $c->getLista();
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="pais">País</label>
-                        <input type="text" class="form-control" id="pais" placeholder="Brasil">
+                        <input type="text" class="form-control" id="pais" name="pais" placeholder="Brasil">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="estado">Estado</label>
-                        <select id="estado" class="form-control">
+                        <select id="estado" class="form-control" name="estado">
                             <option value="AC">Acre</option>
                             <option value="AL">Alagoas</option>
                             <option value="AP">Amapá</option>
@@ -187,21 +243,21 @@ $alunos = $c->getLista();
                     </div>
                     <div class="form-group col-md-4">
                         <label for="municipio">Município</label>
-                        <input type="text" class="form-control" id="municipio" placeholder="Cidade onde mora...">
+                        <input type="text" class="form-control" id="municipio" name="municipio" placeholder="Cidade onde mora...">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-2">
                         <label for="cep">CEP</label>
-                        <input type="text" class="form-control" id="cep">
+                        <input type="text" class="form-control" id="cep" name="cep">
                     </div>
                     <div class="form-group col-md-5">
                         <label for="celular">Celular</label>
-                        <input type="text" class="form-control" id="celular">
+                        <input type="text" class="form-control" id="celular" name="celular">
                     </div>
                     <div class="form-group col-md-5">
                         <label for="celularoutro">Outro Telefone</label>
-                        <input type="text" class="form-control" id="celularoutro">
+                        <input type="text" class="form-control" id="celularoutro" name="celularoutro">
                     </div>
                 </div>
                 <div class="form-row">
