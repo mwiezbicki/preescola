@@ -1,3 +1,10 @@
+<?php
+require 'config.php';
+require 'classes/aluno.class.php';
+
+$c = new Alunos();
+$alunos = $c->getLista();
+?>
 <html>
     <head>
         <title>Cadastro de Pessoas</title>
@@ -45,7 +52,9 @@
                         <label for="nomealuno">Aluno</label>
                         <select id="nomealuno"class="form-control">
                             <option>Selecione</option>
-                            <option>Marlon Wiezbicki</option>
+                            <?php foreach ($alunos as $aluno): ?>
+                                <option value="<?php echo $aluno['id']; ?>"><?php echo $aluno['nm_aluno']; ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group col-md-3">

@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 try {
     $opcoes = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
     $dsn = "mysql:dbname=preescola;host=localhost";
