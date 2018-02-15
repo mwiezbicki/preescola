@@ -43,7 +43,10 @@
                 <div class="form-row" id="idDocumentos" style="display: none">
                     <div class="form-group col-md-12">
                         <label for="nomealuno">Aluno</label>
-                        <input type="text" class="form-control" id="nomealuno" placeholder="Digite o nome do aluno">
+                        <select id="nomealuno"class="form-control">
+                            <option>Selecione</option>
+                            <option>Marlon Wiezbicki</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="cpf">CPF</label>
