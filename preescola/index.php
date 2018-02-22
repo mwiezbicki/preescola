@@ -29,7 +29,7 @@ require 'config.php';
                                 <li><a href="">Disciplina</a></li>
                                 <li><a href="">Turma</a></li>
                                 <li><a href="">Série</a></li>
-                                <li><a href="">Profissão</a></li>
+                                <li><a href="profissao.php">Profissão</a></li>
                             </ul>
                         </li>
                         <li><a href="">Matricula</a></li>
