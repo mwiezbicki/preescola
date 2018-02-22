@@ -74,7 +74,7 @@ $profissao = $p->getLista();
                 <div class="form-row">
                     <div class="form-group col-md-9">
                         <label for="nome">Nome</label>
-                        <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome">
+                        <input type="text" class="form-control" name="nome" id="nome" onkeyup="maiuscula(this)" placeholder="Nome">
                     </div>
 
                     <div class="form-group col-md-3">
@@ -337,6 +337,14 @@ $profissao = $p->getLista();
                     return false;
                 return true;
             }
+        </script>
+        <script type="text/javascript">
+        // INICIO FUNÇÃO DE MASCARA MAIUSCULA
+            function maiuscula(z) {
+                v = z.value.toUpperCase();
+                z.value = v;
+            }
+        //FIM DA FUNÇÃO MASCARA MAIUSCULA
         </script>
     </body>
 </html>
