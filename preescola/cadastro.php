@@ -1,9 +1,12 @@
 <?php
 require 'config.php';
 require 'classes/aluno.class.php';
+require 'classes/profissao.class.php';
 
 $c = new Pessoas();
+$p = new Profissao();
 $pessoa = $c->getLista();
+$profissao = $p->getLista();
 ?>
 <html>
     <head>
@@ -41,14 +44,10 @@ $pessoa = $c->getLista();
                 $cep = addslashes($_POST['cep']);
                 $celular = addslashes($_POST['celular']);
                 $celularoutro = addslashes($_POST['celularoutro']);
-                
+
 
                 if (!empty($nome)) {
-                    if ($c->cadastrar($nome, $data_cadastro, $data_nascimento, $id_sexo,
-                            $id_pessoa, $id_aluno, $cpf, $rg, $id_profissao, $email,
-                            $nm_empresa, $end_comercial, $id_instrucao, $tel_comercial,
-                            $endereco, $numero, $complemento, $bairro, $id_religiao,
-                            $resp_finan, $pais, $id_estado, $municipio, $cep, $celular, $celularoutro)) {
+                    if ($c->cadastrar($nome, $data_cadastro, $data_nascimento, $id_sexo, $id_pessoa, $id_aluno, $cpf, $rg, $id_profissao, $email, $nm_empresa, $end_comercial, $id_instrucao, $tel_comercial, $endereco, $numero, $complemento, $bairro, $id_religiao, $resp_finan, $pais, $id_estado, $municipio, $cep, $celular, $celularoutro)) {
                         ?>
                         <div class="alert alert-success">
                             Dados cadastrados com sucesso!
@@ -70,7 +69,7 @@ $pessoa = $c->getLista();
                 }
             }
             ?>
-            <form method="POST">
+            <form name="frmcpf" method="POST">
                 <hr />
                 <div class="form-row">
                     <div class="form-group col-md-9">
@@ -110,14 +109,18 @@ $pessoa = $c->getLista();
                         <select id="nomealuno"class="form-control" name="nomealuno">
                             <option selected value="0"></option>
                             <?php foreach ($pessoa as $p): ?>
-                            
+
                                 <option value="<?php echo $p['id']; ?>"><?php echo $p['nome']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label for="cpf">CPF</label>
                         <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite seu CPF">
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label>Validar CPF</label>
+                        <input type="button" name="submit" value="Checar" class="btn btn-primary" onclick="VerificaCPF();">
                     </div>
                     <div class="form-group col-md-3">
                         <label for="rg">RG</label>
@@ -126,10 +129,10 @@ $pessoa = $c->getLista();
                     <div class="form-group col-md-3">
                         <label for="profissao">Profissão</label>
                         <select id="profissao" class="form-control" name="profissao">
-                            <option selected value="1">Administrador</option>
-                            <option value="2">Comerciante</option>
-                            <option value="3">Médico</option>
-                            <option value="4">Enfermeiro</option>
+                            <option selected value="0"></option>
+                            <?php foreach ($profissao as $prof) : ?>
+                                <option value="<?php echo $prof['id_profissao']; ?>"><?php echo utf8_encode($prof['nm_profissao']); ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
@@ -268,7 +271,7 @@ $pessoa = $c->getLista();
                 <div class="form-row">
                     <div class="form-group col-md-2">
                         <button type="submit" class="btn btn-success">Salvar</button>
-                        <a href="cadastro.php" class="btn btn-danger">Cancelar</a>
+                        <a href="index.php" class="btn btn-danger">Cancelar</a>
                     </div>
                 </div>
             </form>
@@ -278,14 +281,14 @@ $pessoa = $c->getLista();
         <script type="text/javascript" src="js/jquery.maskedinput.min.js"></script>
 <!--        <script type="text/javascript" src="js/script.js"></script>-->
         <script type="text/javascript">
-                        var $m = jQuery.noConflict()
-                        $m(document).ready(function () {
-                            $m("#cep").mask("99999-999");
-                            $m("#celular").mask("(99) 99999-9999");
-                            $m("#celularoutro").mask("(99) 9999-9999");
-                            $m("#cpf").mask("999.999.999-99");
-                            $m("#telefonecom").mask("(99) 9999-9999");
-                        });
+                            var $m = jQuery.noConflict()
+                            $m(document).ready(function () {
+                                $m("#cep").mask("99999-999");
+                                $m("#celular").mask("(99) 99999-9999");
+                                $m("#celularoutro").mask("(99) 9999-9999");
+                                //$m("#cpf").mask("999.999.999-99");
+                                $m("#telefonecom").mask("(99) 9999-9999");
+                            });
         </script>
         <script type="text/javascript">
             function optionCheck() {
@@ -297,6 +300,42 @@ $pessoa = $c->getLista();
                     document.getElementById("idDocumentos").style.display = "block";
                     document.getElementById("idDocumentosOutros").style.display = "block";
                 }
+            }
+        </script>
+        <script type="text/javascript">
+            function VerificaCPF() {
+                if (vercpf(document.frmcpf.cpf.value))
+                {
+                    alert('CPF VÁLIDO');
+                } else
+                {
+                    errors = "1";
+                    if (errors)
+                        alert('CPF NÃO VÁLIDO');
+                    document.retorno = (errors == '');
+                }
+            }
+            function vercpf(cpf)
+            {
+                if (cpf.length != 11 || cpf == "00000000000" || cpf == "11111111111" || cpf == "22222222222" || cpf == "33333333333" || cpf == "44444444444" || cpf == "55555555555" || cpf == "66666666666" || cpf == "77777777777" || cpf == "88888888888" || cpf == "99999999999")
+                    return false;
+                add = 0;
+                for (i = 0; i < 9; i ++)
+                    add += parseInt(cpf.charAt(i)) * (10 - i);
+                rev = 11 - (add % 11);
+                if (rev == 10 || rev == 11)
+                    rev = 0;
+                if (rev != parseInt(cpf.charAt(9)))
+                    return false;
+                add = 0;
+                for (i = 0; i < 10; i ++)
+                    add += parseInt(cpf.charAt(i)) * (11 - i);
+                rev = 11 - (add % 11);
+                if (rev == 10 || rev == 11)
+                    rev = 0;
+                if (rev != parseInt(cpf.charAt(10)))
+                    return false;
+                return true;
             }
         </script>
     </body>
