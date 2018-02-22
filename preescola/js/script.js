@@ -62,3 +62,20 @@ function editar(id) {
         }
     });
 }
+
+function excluir(id) {
+    $('#modal').find('.modal-body').html('Tem certeza que deseja excluir a religião?<br/><button class="btn btn-danger" onclick="excluirReligiao('+id+')">SIM</button><button class="btn btn-success" onclick="fechar()">NAO</button>');
+    $('#modal').modal('show');
+}
+
+function excluirReligiao(id) {
+    $.ajax({
+        url: 'excluir.php',
+        type: 'POST',
+        data: {id: id},
+        success: function () {
+            alert("Religião excluida com sucesso!");
+            window.location.href = window.location.href;
+        }
+    });
+}
