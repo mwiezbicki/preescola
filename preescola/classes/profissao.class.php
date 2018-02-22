@@ -16,8 +16,7 @@ class Profissao {
    
     public function cadastrar($nome) {
         global $pdo;
-        $sql = $pdo->prepare("INSERT INTO profissao SET nm_profissao = :nome");
-
+        $sql = $pdo->prepare("INSERT INTO profissao SET nm_profissao = :nome, situacao = 'A'");
         $sql->bindValue(":nome", $nome);
         $sql->execute();
 
