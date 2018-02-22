@@ -25,7 +25,7 @@ require 'config.php';
                         <li class="dropdown">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">Cadastro<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="cadastro.php">Aluno</a></li>
+                                <li><a href="cadastro.php">Pessoa</a></li>
                                 <li><a href="disciplina.php">Disciplina</a></li>
                                 <li><a href="">Turma</a></li>
                                 <li><a href="">Série</a></li>

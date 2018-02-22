@@ -2,11 +2,14 @@
 require 'config.php';
 require 'classes/aluno.class.php';
 require 'classes/profissao.class.php';
+require 'classes/religiao.class.php';
 
 $c = new Pessoas();
 $p = new Profissao();
+$r = new Religiao();
 $pessoa = $c->getLista();
 $profissao = $p->getLista();
+$religiao = $r->getLista();
 ?>
 <html>
     <head>
@@ -192,11 +195,10 @@ $profissao = $p->getLista();
                     <div class="form-group col-md-4">
                         <label for="religiao">Religião</label>
                         <select id="religiao" class="form-control" name="religiao">
-                            <option selected value="1">Católica</option>
-                            <option value="2">Budista</option>
-                            <option value="3">Espiríta</option>
-                            <option value="4">Evangélica</option>
-                            <option value="5">Testemunho de Jeová</option>                    
+                            <option selected value="0"></option>
+                            <?php foreach ($religiao as $rel) : ?>
+                                <option value="<?php echo $rel['id']; ?>"><?php echo utf8_encode($rel['religiao']); ?></option>
+                            <?php endforeach; ?>                    
                         </select>
                     </div> 
                     <div class="form-group col-md-4">
@@ -339,12 +341,12 @@ $profissao = $p->getLista();
             }
         </script>
         <script type="text/javascript">
-        // INICIO FUNÇÃO DE MASCARA MAIUSCULA
+            // INICIO FUNÇÃO DE MASCARA MAIUSCULA
             function maiuscula(z) {
                 v = z.value.toUpperCase();
                 z.value = v;
             }
-        //FIM DA FUNÇÃO MASCARA MAIUSCULA
+            //FIM DA FUNÇÃO MASCARA MAIUSCULA
         </script>
     </body>
 </html>
